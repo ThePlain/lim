@@ -25,10 +25,10 @@ namespace lim::logger {
 #define LOGGER "Unknown"
 #endif
 
-#define LOG_DEBUG(fmt, ...)   lim::logger::Print(lim::logger::eLevelDebug,   LOGGER, fmt, ##__VA_ARGS__)
-#define LOG_INFO(fmt, ...)    lim::logger::Print(lim::logger::eLevelInfo,    LOGGER, fmt, ##__VA_ARGS__)
-#define LOG_WARNING(fmt, ...) lim::logger::Print(lim::logger::eLevelWarning, LOGGER, fmt, ##__VA_ARGS__)
-#define LOG_ERROR(fmt, ...)   lim::logger::Print(lim::logger::eLevelError,   LOGGER, fmt, ##__VA_ARGS__)
-#define LOG_PANIC(fmt, ...)   lim::logger::Print(lim::logger::eLevelPanic,   LOGGER, fmt, ##__VA_ARGS__)
+#define LOG_DEBUG(fmt, ...)   lim::logger::Record(lim::logger::eLevelDebug,   LOGGER, fmt, ##__VA_ARGS__)
+#define LOG_INFO(fmt, ...)    lim::logger::Record(lim::logger::eLevelInfo,    LOGGER, fmt, ##__VA_ARGS__)
+#define LOG_WARNING(fmt, ...) lim::logger::Record(lim::logger::eLevelWarning, LOGGER, fmt, ##__VA_ARGS__)
+#define LOG_ERROR(fmt, ...)   lim::logger::Record(lim::logger::eLevelError,   LOGGER, fmt, ##__VA_ARGS__)
+#define LOG_PANIC(fmt, ...)   lim::logger::Record(lim::logger::eLevelPanic,   LOGGER, fmt, ##__VA_ARGS__)
 
 #endif
