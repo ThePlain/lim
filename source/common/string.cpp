@@ -4,47 +4,38 @@
 #include <new>
 
 namespace lim {
-    bool String::is_sso() const noexcept {
-        return sso.used < 24;
-    }
-
-    bool String::is_heap() const noexcept {
-        return sso.used >= 24;
-    }
-
-    size_t String::length() const noexcept {
-        return sso.used;
-    }
-
-    size_t String::capacity() const noexcept {
-        return is_sso() ? 23 : raw.size - 1;
-    }
-
-    const char* String::c_str() const noexcept {
-        return is_sso() ? sso.buffer : raw.buffer;
-    }
-
     String::String() {
-        sso.used = 0;
+        sso.size = 0;
         sso.buffer[0] = '\0';
+    };
+
+    String::String(size_t size) {
+        if (size < 24) {
+            sso.size      = 0;
+            sso.buffer[0] = '\0';
+        }
+        else {
+            raw.size      = size;
+            raw.buffer    = new char[raw.size];
+            raw.buffer[0] = '\0';
+        }
     };
 
     String::String(const char* other) {
         if (!other) {
-            sso.used      = 0;
+            sso.size      = 0;
             sso.buffer[0] = '\0';
             return;
         }
 
         u64 len = strlen(other);
         if (len < 24) {
-            sso.used = len;
+            sso.size = len;
             memcpy(sso.buffer, other, len + 1);
         }
         else {
-            raw.used   = len;
-            raw.size   = len + 1;
-            raw.buffer = new char[raw.size];
+            raw.size   = len;
+            raw.buffer = new char[raw.size + 1];
             memcpy(raw.buffer, other, len + 1);
         }
     };
@@ -54,17 +45,16 @@ namespace lim {
             sso = other.sso;
         }
         else {
-            raw.used   = other.raw.used;
             raw.size   = other.raw.size;
-            raw.buffer = new char[raw.size];
-            memcpy(raw.buffer, other.raw.buffer, raw.used + 1);
+            raw.buffer = new char[raw.size + 1];
+            memcpy(raw.buffer, other.raw.buffer, raw.size + 1);
         }
     };
 
     String::String(String&& other) {
         memcpy(this, &other, sizeof(String));
 
-        other.sso.used = 0;
+        other.sso.size = 0;
         other.sso.buffer[0] = '\0';
     };
 
@@ -94,5 +84,37 @@ namespace lim {
         this->~String();
         new (this) String(other);
         return *this;
+    };
+
+    String::operator const char* () const noexcept {
+        return c_str();
+    };
+
+    String::operator char* () noexcept {
+        return buffer();
+    };
+
+    bool String::is_sso() const noexcept {
+        return sso.size < 24;
+    }
+
+    bool String::is_heap() const noexcept {
+        return sso.size >= 24;
+    }
+
+    size_t String::length() const noexcept {
+        return sso.size;
+    }
+
+    size_t String::capacity() const noexcept {
+        return is_sso() ? 23 : raw.size;
+    }
+
+    const char* String::c_str() const noexcept {
+        return is_sso() ? sso.buffer : raw.buffer;
+    }
+
+    char* String::buffer() noexcept {
+        return is_sso() ? sso.buffer : raw.buffer;
     };
 };
