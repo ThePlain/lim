@@ -16,7 +16,11 @@ set(GLFW_INSTALL                OFF CACHE BOOL "" FORCE)
 set(GLM_ENABLE_CXX_17           ON  CACHE BOOL "" FORCE)
 set(GLM_ENABLE_FAST_MATH        ON  CACHE BOOL "" FORCE)
 
-add_subdirectory(extern/glm)
+# In lim's CMakeLists.txt or wherever it's added
+if (NOT TARGET glm)
+    add_subdirectory(extern/lim/extern/glm/glm)
+endif()
+
 add_subdirectory(extern/glfw)
 
 add_library(lim
