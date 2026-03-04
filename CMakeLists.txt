@@ -18,7 +18,7 @@ set(GLM_ENABLE_FAST_MATH        ON  CACHE BOOL "" FORCE)
 
 # In lim's CMakeLists.txt or wherever it's added
 if (NOT TARGET glm)
-    add_subdirectory(extern/lim/extern/glm/glm)
+    add_subdirectory(extern/glm)
 endif()
 
 add_subdirectory(extern/glfw)
